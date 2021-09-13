@@ -165,6 +165,8 @@ function [Modulus,PeakForce,Diameter] = Compression(Files)
     
     % Output data to spreadsheet
     Filename = string(datetime('now')) + ".xlsx";
+    Filename = strrep(Filename,'-','_');
+    Filename = strrep(Filename,':','_');
     ColumnName = {'File name','Height(mm)','Creep Time(s)','Diameter(mm)','PeakForce(g)','Modulus(kPa)'};
     OutputTable = table(FileName,SampleHeight,CreepTime,Diameter,PeakForce,Modulus,...
                         'VariableNames',ColumnName);
@@ -183,11 +185,11 @@ function [Modulus,PeakForce] = CompressionProcess(FileName,CreepTime,Diameter,Re
     
     % Convert Time
     Time = RawData.textdata;
-    Reference = convertTo(datetime(Time(1),'InputFormat','dd-mm-yyyy HH:mm:ss.SS'),'posixtime');
+    Reference = convertTo(datetime(Time(1),'InputFormat','MM-dd-yyyy HH:mm:ss.SS'),'posixtime');
     TimeScale = zeros(size(Time));
     TimeScale(1,1) = 0;
     TimeScale(2:end,1) = convertTo(datetime(Time(2:end,1),'InputFormat',...
-                                   'dd-mm-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
+                                   'MM-dd-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
     
     % Error check for relax time
     if RelaxTime > max(TimeScale)
@@ -282,6 +284,8 @@ function [Modulus,PeakForce] = Indentation(Files)
     
     % Output data to spreadsheet
     Filename = string(datetime('now')) + ".xlsx";
+    Filename = strrep(Filename,'-','_');
+    Filename = strrep(Filename,':','_');
     ColumnName = {'File name','Creep Time(s)','PeakForce(g)','Modulus(kPa)'};
     OutputTable = table(FileName,CreepTime,PeakForce,Modulus,...
                         'VariableNames',ColumnName);
@@ -308,11 +312,11 @@ function [Modulus,PeakForce] = HertzProcess(FileName,CreepTime,IndentorSize)
         
         % Convert Time
         Time = RawData.textdata;
-        Reference = convertTo(datetime(Time(1),'InputFormat','dd-mm-yyyy HH:mm:ss.SS'),'posixtime');
+        Reference = convertTo(datetime(Time(1),'InputFormat','MM-dd-yyyy HH:mm:ss.SS'),'posixtime');
         TimeScale = zeros(size(Time));
         TimeScale(1,1) = 0;
         TimeScale(2:end,1) = convertTo(datetime(Time(2:end,1),'InputFormat',...
-                                       'dd-mm-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
+                                       'MM-dd-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
         % Find loading curve based on start point and peak force
         CreepIndex = TimeScale >= CreepTime(i);
         Start = find(CreepIndex,1);
@@ -338,11 +342,11 @@ function [Modulus,PeakForce] = OliPharProcess(FileName,IndentorSize,RelaxTime)
         
         % Convert Time
         Time = RawData.textdata;
-        Reference = convertTo(datetime(Time(1),'InputFormat','dd-mm-yyyy HH:mm:ss.SS'),'posixtime');
+        Reference = convertTo(datetime(Time(1),'InputFormat','MM-dd-yyyy HH:mm:ss.SS'),'posixtime');
         TimeScale = zeros(size(Time));
         TimeScale(1,1) = 0;
         TimeScale(2:end,1) = convertTo(datetime(Time(2:end,1),'InputFormat',...
-                                       'dd-mm-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
+                                       'MM-dd-yyyy HH:mm:ss.SS'),'posixtime') - Reference;
                                    
         % Find the unloading curve based on peak force and relax time 
         [PeakForce(i,1),PeakIndex] = max(Load);
